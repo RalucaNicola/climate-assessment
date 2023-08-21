@@ -2,10 +2,12 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 export interface AppLoadingStatus {
   viewLoaded?: boolean;
+  climateLayerLoaded?: boolean;
 }
 
 const initialState = {
-  viewLoaded: false
+  viewLoaded: false,
+  climateLayerLoaded: false
 } as AppLoadingStatus;
 
 const loadingSlice = createSlice({
@@ -14,9 +16,12 @@ const loadingSlice = createSlice({
   reducers: {
     setViewLoaded(state, param: PayloadAction<boolean>) {
       state.viewLoaded = param.payload;
+    },
+    setClimateLayerLoaded(state, param: PayloadAction<boolean>) {
+      state.climateLayerLoaded = param.payload;
     }
   }
 });
 
-export const { setViewLoaded } = loadingSlice.actions;
+export const { setViewLoaded, setClimateLayerLoaded } = loadingSlice.actions;
 export default loadingSlice.reducer;

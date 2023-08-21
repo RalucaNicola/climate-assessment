@@ -8,6 +8,7 @@ import { setViewLoaded } from '../app-loading/loadingSlice';
 import { getMapCenterFromHashParams } from '../../../utils/URLHashParams';
 import { setError } from '../error-messaging/errorSlice';
 import { initializeViewEventListeners } from './eventListeners';
+import { initializeClimateLayer } from './climateLayer';
 
 
 export const initializeMapView = (divRef: HTMLDivElement) => async (dispatch: AppDispatch) => {
@@ -53,7 +54,9 @@ export const initializeMapView = (divRef: HTMLDivElement) => async (dispatch: Ap
             if (mapCenter) {
                 mapView.goTo({ zoom: mapCenter.zoom, center: [mapCenter.center.lon, mapCenter.center.lat] });
             }
-            //window.view = mapView;
+            dispatch(initializeClimateLayer(mapView));
+            //@ts-ignore
+            window.view = mapView;
             dispatch(initializeViewEventListeners());
         });
     } catch (error) {
