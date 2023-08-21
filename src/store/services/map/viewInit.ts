@@ -7,7 +7,6 @@ import { AppDispatch } from '../../storeConfiguration';
 import { setViewLoaded } from '../app-loading/loadingSlice';
 import { getMapCenterFromHashParams } from '../../../utils/URLHashParams';
 import { setError } from '../error-messaging/errorSlice';
-import { initializeCountryLayer } from './countryLayerInit';
 import { initializeViewEventListeners } from './eventListeners';
 
 
@@ -54,7 +53,6 @@ export const initializeMapView = (divRef: HTMLDivElement) => async (dispatch: Ap
             if (mapCenter) {
                 mapView.goTo({ zoom: mapCenter.zoom, center: [mapCenter.center.lon, mapCenter.center.lat] });
             }
-            dispatch(initializeCountryLayer());
             //window.view = mapView;
             dispatch(initializeViewEventListeners());
         });

@@ -1,18 +1,7 @@
-# ArcGIS app template
+# Climate Assessment
 
-Application template using ArcGIS Maps SDK for JavaScript, React and Calcite.
-
-- [x] Authentication
-- [x] Calcite components for UI
-- [x] Redux for state management
-- [x] Thunk middleware for async operations
-- [x] Responsive design (mobile and desktop)
-- [x] Reading/setting state from/in URL params
-- [x] Error display using Calcite alerts (only displaying the last error)
-- [x] Dismissable intro screen
-- [x] UI animations (using Framer Motion)
-- [ ] Localization support?
-- [ ] Tests?
+The Climate Mapping for Resilience and Adaptation (CMRA) Assessment tool provides current and future climate hazard information to assist federal agencies and the recipients of federal funds with prioritizing, identifying, and implementing climate-informed infrastructure investments.
+This is a prototype application built for the whole world, based on [CMRA Assessment tool](https://livingatlas.arcgis.com/assessment-tool/search).
 
 ## Instructions:
 

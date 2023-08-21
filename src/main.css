@@ -9,21 +9,19 @@ body,
   width: 100%;
   font-family: var(--calcite-sans-family);
   color: var(--calcite-ui-text-1);
-  background: #a8a8a8;
 }
 
 .calcite-mode-dark,
 :root {
-  --calcite-ui-brand: rgb(0, 217, 109);
-  --calcite-ui-brand-hover: #04532c;
-  --border-radius: 10px;
-  --box-shadow: 0 0 12px rgb(0 0 0 / 100%);
+  --calcite-ui-brand: #007ac2;
+  --calcite-ui-brand-hover: #00619b;
+  --border-radius: 0;
   --margin: 15px;
-  --background-color: rgba(50 50 50 / 60%);
+  --background-color: rgba(0 35 47 / 100%);
   --calcite-font-size--1: 0.85rem;
-  --calcite-ui-text-1: rgb(230, 230, 230);
-  --calcite-ui-text-2: rgb(210, 210, 210);
-  --calcite-ui-text-3: rgb(150, 150, 150);
+  --calcite-ui-text-1: rgb(191 238 255/ 90%);
+  --calcite-ui-text-2: rgb(191 238 255/ 90%);
+  --calcite-ui-text-3: rgb(191 238 255/ 90%);
   --calcite-label-margin-bottom: 0;
 }
 
