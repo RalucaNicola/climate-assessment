@@ -6,24 +6,47 @@ import { layerConfig } from "../../../config";
 import { Variable } from "../../../types/types";
 import { ClimateSelection, setSelectedVariable } from "../climateSelectionSlice";
 import { RasterStretchRenderer } from "@arcgis/core/rasterRenderers";
+import MultipartColorRamp from "@arcgis/core/rest/support/MultipartColorRamp";
+import Color from "@arcgis/core/Color";
 
 
-let climateLayer: ImageryTileLayer | null = null;
-let variables: Variable[] = [];
+export let climateLayer: ImageryTileLayer | null = null;
+export let variables: Variable[] = [];
+export let colorRamp: Color[] = [];
 
 export const initializeClimateLayer = (view: MapView) => async (dispatch: AppDispatch) => {
+
+    // get climate layer
     climateLayer = view.map.allLayers.find(layer => layer.title === layerConfig.title) as ImageryTileLayer;
     await climateLayer.load();
+
+    // get variable information
     variables = climateLayer.rasterInfo.multidimensionalInfo.variables.map(variable => {
-        const { name, description } = variable;
+        const { name, description, statistics, unit } = variable;
         return {
             name,
-            description
+            description,
+            min: statistics[0].min,
+            max: statistics[0].max,
+            unit
         }
     });
     dispatch(setClimateLayerLoaded(true));
+
+    // get selected variable
     const selectedVariable = climateLayer.multidimensionalDefinition[0].variableName;
     dispatch(setSelectedVariable({ selectedVariable }));
+
+    // get color stops for the legend
+    const { colorRamps } = (climateLayer.renderer as RasterStretchRenderer).colorRamp as MultipartColorRamp;
+    colorRamps.forEach((ramp, index) => {
+        colorRamp.push(ramp.fromColor);
+        if (index === colorRamps.length - 1) {
+            colorRamp.push(ramp.toColor);
+        }
+    });
+
+    // update renderer when selected variable changes
     listenerMiddleware.startListening({
         actionCreator: setSelectedVariable, effect: (action) => {
             const { selectedVariable } = action.payload as ClimateSelection;
@@ -40,14 +63,4 @@ export const initializeClimateLayer = (view: MapView) => async (dispatch: AppDis
             climateLayer.renderer = renderer;
         }
     })
-}
-
-export const getClimateLayer = () => {
-    if (climateLayer) {
-        return climateLayer;
-    }
-}
-
-export const getVariables = () => {
-    return variables;
 }
