@@ -9,6 +9,7 @@ import { RootState } from '../../store/storeConfiguration';
 import { useSelector } from 'react-redux';
 import IndicatorSelection from '../IndicatorSelection';
 import Section from '../Section';
+import { applicationTitle } from '../../config';
 
 const BottomPanel = () => {
   const [visible, setVisible] = useState(true);
@@ -23,6 +24,7 @@ const BottomPanel = () => {
     return (
       <div className={styles.actionsContainer}>
         <div className={styles.leftActionsContainer}>
+          <button className={styles.applicationTitle} onClick={() => { window.location.href = window.location.pathname; }}>{applicationTitle}</button>
         </div>
         <div className={styles.rightActionsContainer}>
           <CalciteAction

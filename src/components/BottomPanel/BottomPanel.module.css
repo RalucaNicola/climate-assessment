@@ -48,6 +48,17 @@
   grid-area: period;
 }
 
+.applicationTitle {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.9rem;
+  background: none;
+  border: none;
+  color: var(--calcite-font-text-1);
+  cursor: pointer;
+}
+
 @media (max-width: 700px) {
   .leftActionsContainer {
     justify-content: space-between;
