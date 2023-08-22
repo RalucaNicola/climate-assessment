@@ -55,7 +55,7 @@
   font-size: 0.9rem;
   background: none;
   border: none;
-  color: var(--calcite-font-text-1);
+  color: var(--calcite-ui-text-1);
   cursor: pointer;
 }
 

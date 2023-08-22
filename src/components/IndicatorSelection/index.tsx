@@ -30,7 +30,7 @@ const IndicatorSelection = () => {
     }
   }
   return (
-    <><CalciteSelect scale={'m'}
+    <><CalciteSelect scale='m'
       label={'Select a variable'}
       onCalciteSelectChange={(event) => {
         const selectedVariable = event.target.selectedOption.value;

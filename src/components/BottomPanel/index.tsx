@@ -11,6 +11,7 @@ import IndicatorSelection from '../IndicatorSelection';
 import Section from '../Section';
 import { applicationTitle } from '../../config';
 import ScenarioSelection from '../ScenarioSelection';
+import PeriodSelection from '../PeriodSelection';
 
 const BottomPanel = () => {
   const [visible, setVisible] = useState(true);
@@ -30,14 +31,14 @@ const BottomPanel = () => {
         <div className={styles.rightActionsContainer}>
           <CalciteAction
             icon='information-f'
-            scale='s'
+            scale='m'
             appearance='transparent'
             text=''
             onClick={() => dispatch(setInfoModalOptions({ visible: true }))}
           ></CalciteAction>
           <CalciteAction
             icon={visible ? 'chevronDown' : 'chevronUp'}
-            scale='s'
+            scale='m'
             appearance='transparent'
             onClick={togglePanel}
             text=''
@@ -55,8 +56,8 @@ const BottomPanel = () => {
       }} style={{ overflow: 'auto' }}>
         <div className={styles.climateContainer}>
           <Section title="indicator" className={styles.indicatorContainer}>{climateLayerLoaded ? <IndicatorSelection /> : <></>}</Section>
+          <Section title="period" className={styles.periodContainer}>{climateLayerLoaded ? <PeriodSelection /> : <></>}</Section>
           <Section title="scenario" className={styles.scenarioContainer}>{climateLayerLoaded ? <ScenarioSelection /> : <></>}</Section>
-          <Section title="period" className={styles.periodContainer}>Period</Section>
         </div>
       </motion.div>
     </div>

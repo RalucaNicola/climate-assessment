@@ -18,9 +18,9 @@ const ScenarioSelection = () => {
       <CalciteRadioButtonGroup scale={'m'} name="scenario">
         {scenarioValues.map((scenarioValue, index) =>
           <div key={index} className={styles.scenarioSelectionItem}>
-            <CalciteLabel layout="inline" style={{ cursor: "pointer" }} scale="l">
+            <CalciteLabel layout="inline" style={{ cursor: "pointer" }} scale="m">
               <CalciteRadioButton
-                scale="l"
+                scale="m"
                 checked={selectedScenarioValue === scenarioValue.value ? true : null}
                 value={scenarioValue.value}
                 onCalciteRadioButtonChange={(event) => {

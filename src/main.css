@@ -13,8 +13,8 @@ body,
 
 .calcite-mode-dark,
 :root {
-  --calcite-ui-brand: #007ac2;
-  --calcite-ui-brand-hover: #00619b;
+  --calcite-ui-brand: rgb(191 238 255);
+  --calcite-ui-brand-hover: rgb(219, 242, 255);
   --border-radius: 0;
   --margin: 15px;
   --background-color: rgba(0 35 47 / 100%);

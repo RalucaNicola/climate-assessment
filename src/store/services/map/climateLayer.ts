@@ -4,7 +4,7 @@ import { setClimateLayerLoaded } from "../app-loading/loadingSlice";
 import ImageryTileLayer from "@arcgis/core/layers/ImageryTileLayer";
 import { layerConfig } from "../../../config";
 import { Variable } from "../../../types/types";
-import { ClimateSelection, setSelectedScenarioValue, setSelectedVariable } from "../climateSelectionSlice";
+import { ClimateSelection, setSelectedPeriod, setSelectedScenarioValue, setSelectedVariable } from "../climateSelectionSlice";
 import { RasterStretchRenderer } from "@arcgis/core/rasterRenderers";
 import MultipartColorRamp from "@arcgis/core/rest/support/MultipartColorRamp";
 import Color from "@arcgis/core/Color";
@@ -75,6 +75,23 @@ export const initializeClimateLayer = (view: MapView) => async (dispatch: AppDis
             const multidimensionalDefinition = climateLayer.multidimensionalDefinition.map((def) => {
                 if (def.dimensionName === layerConfig.dimensions.scenario.name) {
                     def.values = [selectedScenarioValue];
+                }
+                return def;
+            });
+            climateLayer.multidimensionalDefinition = multidimensionalDefinition;
+        }
+    });
+
+    // get value for period
+    const periodDefinition = climateLayer.multidimensionalDefinition.find(def => def.dimensionName === layerConfig.dimensions.period.name);
+    dispatch(setSelectedPeriod({ selectedPeriod: periodDefinition.values[0] }));
+
+    listenerMiddleware.startListening({
+        actionCreator: setSelectedPeriod, effect: (action) => {
+            const { selectedPeriod } = action.payload as ClimateSelection;
+            const multidimensionalDefinition = climateLayer.multidimensionalDefinition.map((def) => {
+                if (def.dimensionName === layerConfig.dimensions.period.name) {
+                    def.values = [selectedPeriod];
                 }
                 return def;
             });
