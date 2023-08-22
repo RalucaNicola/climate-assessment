@@ -12,12 +12,12 @@ const createGradient = (colorStops: ColorStop[]) => {
 const ContinuousLegend = ({ legendInfo }: LegendProps) => {
   return (
     <div>
+      <div className={styles.gradientContainer}>
+        <div style={{ background: createGradient(legendInfo.colorStops), height: '20px' }}></div>
+      </div>
       <div className={styles.labels}>
         <div>&gt;{legendInfo.min.toFixed(2)} {legendInfo.unit}</div>
         <div>&lt;{legendInfo.max.toFixed(2)} {legendInfo.unit}</div>
-      </div>
-      <div className={styles.gradientContainer}>
-        <div style={{ background: createGradient(legendInfo.colorStops), height: '20px' }}></div>
       </div>
     </div>
   );
