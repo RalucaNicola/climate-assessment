@@ -49,7 +49,11 @@ const BottomPanel = () => {
       <motion.div layout='size' animate={{
         height: visible ? 'min(200px, 30vh)' : 0
       }} style={{ overflow: 'auto' }}>
-        {climateLayerLoaded ? <IndicatorSelection /> : <></>}
+        <div className={styles.climateContainer}>
+          <div className={styles.indicatorContainer}>{climateLayerLoaded ? <IndicatorSelection /> : <></>}</div>
+          <div className={styles.scenarioContainer}>Scenario</div>
+          <div className={styles.periodContainer}>Period</div>
+        </div>
       </motion.div>
     </div>
   );

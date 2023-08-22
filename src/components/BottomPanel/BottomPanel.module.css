@@ -25,16 +25,34 @@
   align-items: center;
 }
 
-.selectedCountry {
-  color: var(--calcite-ui-brand);
-  font-weight: bold;
+.climateContainer {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-areas:
+    'indicator period'
+    'scenario period';
+  gap: 10px;
+  max-width: min(900px, 80%);
+  margin: 0 auto;
+  height: 100%;
+}
+
+.indicatorContainer {
+  grid-area: indicator;
+}
+.scenarioContainer {
+  grid-area: scenario;
+}
+.periodContainer {
+  grid-area: period;
 }
 
 @media (max-width: 700px) {
   .leftActionsContainer {
     justify-content: space-between;
   }
-  .labelContainer {
-    display: none;
+  .climateContainer {
+    display: block;
   }
 }
