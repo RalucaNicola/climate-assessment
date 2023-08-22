@@ -31,14 +31,14 @@ const BottomPanel = () => {
         <div className={styles.rightActionsContainer}>
           <CalciteAction
             icon='information-f'
-            scale='m'
+            scale='s'
             appearance='transparent'
             text=''
             onClick={() => dispatch(setInfoModalOptions({ visible: true }))}
           ></CalciteAction>
           <CalciteAction
             icon={visible ? 'chevronDown' : 'chevronUp'}
-            scale='m'
+            scale='s'
             appearance='transparent'
             onClick={togglePanel}
             text=''
