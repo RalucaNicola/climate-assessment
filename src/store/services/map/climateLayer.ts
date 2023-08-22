@@ -1,5 +1,5 @@
 import MapView from "@arcgis/core/views/MapView";
-import { AppDispatch, listenerMiddleware } from "../../storeConfiguration";
+import { AppDispatch, listenerMiddleware, store } from "../../storeConfiguration";
 import { setClimateLayerLoaded } from "../app-loading/loadingSlice";
 import ImageryTileLayer from "@arcgis/core/layers/ImageryTileLayer";
 import { layerConfig } from "../../../config";
@@ -8,6 +8,7 @@ import { ClimateSelection, setSelectedPeriod, setSelectedScenarioValue, setSelec
 import { RasterStretchRenderer } from "@arcgis/core/rasterRenderers";
 import MultipartColorRamp from "@arcgis/core/rest/support/MultipartColorRamp";
 import Color from "@arcgis/core/Color";
+import { Point } from "@arcgis/core/geometry";
 
 
 export let climateLayer: ImageryTileLayer | null = null;
@@ -97,5 +98,19 @@ export const initializeClimateLayer = (view: MapView) => async (dispatch: AppDis
             });
             climateLayer.multidimensionalDefinition = multidimensionalDefinition;
         }
+    });
+}
+
+export const getClimateDetails = (mapPoint: Point) => {
+    const state = store.getState();
+    const currentVariable = state.climateSelection.selectedVariable;
+    return new Promise((resolve, reject) => {
+        climateLayer
+            .identify(mapPoint, { transposedVariableName: currentVariable })
+            .then(({ dataSeries }) => {
+                const climateValues = dataSeries || [Number.NaN];
+                resolve({ climateValues });
+            })
+            .catch(reject);
     });
 }

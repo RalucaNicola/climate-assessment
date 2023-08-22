@@ -2,6 +2,7 @@ import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
 import { getGlobalView } from "../../globals";
 import { setMapCenterToHashParams } from "../../../utils/URLHashParams";
 import { AppDispatch } from "../../storeConfiguration";
+import { getClimateDetails } from "./climateLayer";
 
 const listeners: IHandle[] = [];
 export const initializeViewEventListeners = () => (dispatch: AppDispatch) => {
@@ -18,21 +19,13 @@ export const initializeViewEventListeners = () => (dispatch: AppDispatch) => {
         );
 
         listeners.push(listener);
-        // const countriesLayer = getCountriesLayer();
-        // const listenerClick = view.on('click', async (event) => {
-        //     const result = await view.hitTest(event, { include: [countriesLayer] });
-        //     if (result.results && result.results.length > 0) {
-        //         const graphic = (result.results[0] as GraphicHit).graphic;
-        //         const newCountrySelection = graphic.attributes[layerConfig.field];
-        //         if (newCountrySelection) {
-        //             dispatch(highlightCountryFromMap({ name: newCountrySelection, geometry: graphic.geometry as Polygon }));
-        //         }
-        //     } else {
-        //         dispatch(highlightCountryFromMap({ name: null }));
-        //     }
-        // });
+        const listenerClick = view.on('click', async (event) => {
+            const mapPoint = view.toMap(event);
+            const results = await getClimateDetails(mapPoint);
+            console.log(results);
+        });
 
-        // listeners.push(listenerClick);
+        listeners.push(listenerClick);
     }
 }
 
