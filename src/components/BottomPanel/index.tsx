@@ -8,6 +8,7 @@ import { setInfoModalOptions } from '../../store/services/modal-options/modalSli
 import { RootState } from '../../store/storeConfiguration';
 import { useSelector } from 'react-redux';
 import IndicatorSelection from '../IndicatorSelection';
+import Section from '../Section';
 
 const BottomPanel = () => {
   const [visible, setVisible] = useState(true);
@@ -50,9 +51,9 @@ const BottomPanel = () => {
         height: visible ? 'min(200px, 30vh)' : 0
       }} style={{ overflow: 'auto' }}>
         <div className={styles.climateContainer}>
-          <div className={styles.indicatorContainer}>{climateLayerLoaded ? <IndicatorSelection /> : <></>}</div>
-          <div className={styles.scenarioContainer}>Scenario</div>
-          <div className={styles.periodContainer}>Period</div>
+          <Section title="indicator" className={styles.indicatorContainer}>{climateLayerLoaded ? <IndicatorSelection /> : <></>}</Section>
+          <Section title="scenario" className={styles.scenarioContainer}>Scenario</Section>
+          <Section title="period" className={styles.periodContainer}>Period</Section>
         </div>
       </motion.div>
     </div>
