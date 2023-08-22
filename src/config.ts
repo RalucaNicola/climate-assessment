@@ -13,11 +13,11 @@ export const layerConfig = {
       description: "Scenario",
       values: [{
         value: 0,
-        name: "Lower Emissions",
+        name: "Lower emissions",
         description: "If we drastically reduce our use of fossil fuels, reducing global emissions of heat-trapping gases to zero by 2040."
       }, {
         value: 0.01,
-        name: "Higher Emissions",
+        name: "Higher emissions",
         description: "If we continue increasing emissions of heat-trapping gases from fossil fuels through 2100."
       }]
     },

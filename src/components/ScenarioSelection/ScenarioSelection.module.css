@@ -1,16 +1,4 @@
-.scenarioSelectionItem {
-  display: flex;
-  flex-direction: row;
-  align-items: start;
-  gap: 0.5rem;
-}
-
-.scenarioSelectionItem > :first-child {
-  flex-shrink: 0;
-  width: 130px;
-}
-
 .scenarioSelectionItem > p {
   font-size: 0.8rem;
-  margin: 0;
+  margin: 5px 0 0 28px;
 }
