@@ -3,6 +3,7 @@ import { FC, ReactNode, useEffect, useRef } from 'react';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { initializeMapView } from '../../store/services/map/viewInit';
 import { removeEventListeners } from '../../store/services/map/eventListeners';
+import { destroyView } from '../../store/globals';
 
 interface Props {
   children?: ReactNode;
@@ -19,6 +20,7 @@ const Map: FC<Props> = () => {
       dispatch(initializeMapView(mapDivRef.current));
       return () => {
         removeEventListeners();
+        destroyView();
       }
     }
   }, [mapDivRef.current]);

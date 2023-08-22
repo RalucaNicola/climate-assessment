@@ -4,7 +4,7 @@ import { setClimateLayerLoaded } from "../app-loading/loadingSlice";
 import ImageryTileLayer from "@arcgis/core/layers/ImageryTileLayer";
 import { layerConfig } from "../../../config";
 import { Variable } from "../../../types/types";
-import { ClimateSelection, setSelectedVariable } from "../climateSelectionSlice";
+import { ClimateSelection, setSelectedScenarioValue, setSelectedVariable } from "../climateSelectionSlice";
 import { RasterStretchRenderer } from "@arcgis/core/rasterRenderers";
 import MultipartColorRamp from "@arcgis/core/rest/support/MultipartColorRamp";
 import Color from "@arcgis/core/Color";
@@ -39,6 +39,7 @@ export const initializeClimateLayer = (view: MapView) => async (dispatch: AppDis
 
     // get color stops for the legend
     const { colorRamps } = (climateLayer.renderer as RasterStretchRenderer).colorRamp as MultipartColorRamp;
+    colorRamp = [];
     colorRamps.forEach((ramp, index) => {
         colorRamp.push(ramp.fromColor);
         if (index === colorRamps.length - 1) {
@@ -62,5 +63,22 @@ export const initializeClimateLayer = (view: MapView) => async (dispatch: AppDis
             renderer.statistics = variableInfo.statistics;
             climateLayer.renderer = renderer;
         }
-    })
+    });
+
+    // get value for scenario
+    const scenarioDefinition = climateLayer.multidimensionalDefinition.find(def => def.dimensionName === layerConfig.dimensions.scenario.name);
+    dispatch(setSelectedScenarioValue({ selectedScenarioValue: scenarioDefinition.values[0] }));
+
+    listenerMiddleware.startListening({
+        actionCreator: setSelectedScenarioValue, effect: (action) => {
+            const { selectedScenarioValue } = action.payload as ClimateSelection;
+            const multidimensionalDefinition = climateLayer.multidimensionalDefinition.map((def) => {
+                if (def.dimensionName === layerConfig.dimensions.scenario.name) {
+                    def.values = [selectedScenarioValue];
+                }
+                return def;
+            });
+            climateLayer.multidimensionalDefinition = multidimensionalDefinition;
+        }
+    });
 }

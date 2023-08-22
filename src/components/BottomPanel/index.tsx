@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import IndicatorSelection from '../IndicatorSelection';
 import Section from '../Section';
 import { applicationTitle } from '../../config';
+import ScenarioSelection from '../ScenarioSelection';
 
 const BottomPanel = () => {
   const [visible, setVisible] = useState(true);
@@ -50,11 +51,11 @@ const BottomPanel = () => {
     <div className={styles.container}>
       {getHeader()}
       <motion.div layout='size' animate={{
-        height: visible ? 'min(200px, 30vh)' : 0
+        height: visible ? 'min(300px, 30vh)' : 0
       }} style={{ overflow: 'auto' }}>
         <div className={styles.climateContainer}>
           <Section title="indicator" className={styles.indicatorContainer}>{climateLayerLoaded ? <IndicatorSelection /> : <></>}</Section>
-          <Section title="scenario" className={styles.scenarioContainer}>Scenario</Section>
+          <Section title="scenario" className={styles.scenarioContainer}>{climateLayerLoaded ? <ScenarioSelection /> : <></>}</Section>
           <Section title="period" className={styles.periodContainer}>Period</Section>
         </div>
       </motion.div>

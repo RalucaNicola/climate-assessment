@@ -14,11 +14,11 @@ export const layerConfig = {
       values: [{
         value: 0,
         name: "Lower Emissions",
-        description: "This scenario is a possible future in which humans drastically reduce their use of fossil fuels, reducing global emissions of heat-trapping gases to zero by 2040. This scenario is known as RCP 4.5."
+        description: "If we drastically reduce our use of fossil fuels, reducing global emissions of heat-trapping gases to zero by 2040."
       }, {
         value: 0.01,
         name: "Higher Emissions",
-        description: "This scenario is a possible future in which humans continue increasing emissions of heat-trapping gases from fossil fuels through 2100. This scenario is known as RCP 8.5."
+        description: "If we continue increasing emissions of heat-trapping gases from fossil fuels through 2100."
       }]
     },
     period: {
