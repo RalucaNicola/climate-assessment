@@ -29,6 +29,7 @@ const IndicatorSelection = () => {
       colorStops
     }
   }
+
   return (
     <><CalciteSelect scale='m'
       label={'Select a variable'}

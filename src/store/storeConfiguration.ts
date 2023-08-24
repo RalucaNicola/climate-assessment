@@ -2,7 +2,7 @@ import { combineReducers, configureStore, createListenerMiddleware } from '@redu
 import loadingReducer from './services/app-loading/loadingSlice';
 import errorReducer from './services/error-messaging/errorSlice';
 import modalOptionsReducer from './services/modal-options/modalSlice';
-import climateSelectionReducer, { setSelectedVariable } from './services/climateSelectionSlice';
+import climateSelectionReducer from './services/climateSelectionSlice';
 
 const rootReducer = combineReducers({
   error: errorReducer,
@@ -12,8 +12,6 @@ const rootReducer = combineReducers({
 });
 
 export const listenerMiddleware = createListenerMiddleware();
-
-
 
 export const store = configureStore({
   reducer: rootReducer,

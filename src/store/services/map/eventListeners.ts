@@ -1,12 +1,12 @@
 import * as reactiveUtils from "@arcgis/core/core/reactiveUtils";
-import { getGlobalView } from "../../globals";
 import { setMapCenterToHashParams } from "../../../utils/URLHashParams";
 import { AppDispatch } from "../../storeConfiguration";
 import { getClimateDetails } from "./climateLayer";
+import MapView from "@arcgis/core/views/MapView";
 
 const listeners: IHandle[] = [];
-export const initializeViewEventListeners = () => (dispatch: AppDispatch) => {
-    const view = getGlobalView();
+
+export const initializeViewEventListeners = (view: MapView) => (dispatch: AppDispatch) => {
     if (view) {
         const listener = reactiveUtils.when(
             () => view.stationary,

@@ -12,6 +12,7 @@ const PeriodSelection = () => {
   const dispatch = useAppDispatch();
   const selectedPeriod = useSelector((state: RootState) => state.climateSelection.selectedPeriod);
   const periods = layerConfig.dimensions.period.values;
+
   return (
     <div className={styles.container}>
       {periods.map((period, index) =>

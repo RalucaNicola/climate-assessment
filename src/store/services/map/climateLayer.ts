@@ -9,19 +9,25 @@ import { RasterStretchRenderer } from "@arcgis/core/rasterRenderers";
 import MultipartColorRamp from "@arcgis/core/rest/support/MultipartColorRamp";
 import Color from "@arcgis/core/Color";
 import { Point } from "@arcgis/core/geometry";
+import { PayloadAction, UnsubscribeListener } from "@reduxjs/toolkit";
 
-
-export let climateLayer: ImageryTileLayer | null = null;
-export let variables: Variable[] = [];
-export let colorRamp: Color[] = [];
+export let climateLayer: ImageryTileLayer | null;
+export let variables: Variable[];
+export let colorRamp: Color[];
+let unsubscribeListeners: UnsubscribeListener[];
 
 export const initializeClimateLayer = (view: MapView) => async (dispatch: AppDispatch) => {
+    colorRamp = [];
+    variables = [];
+    climateLayer = null;
+    unsubscribeListeners = [];
+    dispatch(setClimateLayerLoaded(false));
 
     // get climate layer
     climateLayer = view.map.allLayers.find(layer => layer.title === layerConfig.title) as ImageryTileLayer;
     await climateLayer.load();
 
-    // get variable information
+    // get variables information
     variables = climateLayer.rasterInfo.multidimensionalInfo.variables.map(variable => {
         const { name, description, statistics, unit } = variable;
         return {
@@ -40,7 +46,6 @@ export const initializeClimateLayer = (view: MapView) => async (dispatch: AppDis
 
     // get color stops for the legend
     const { colorRamps } = (climateLayer.renderer as RasterStretchRenderer).colorRamp as MultipartColorRamp;
-    colorRamp = [];
     colorRamps.forEach((ramp, index) => {
         colorRamp.push(ramp.fromColor);
         if (index === colorRamps.length - 1) {
@@ -49,55 +54,67 @@ export const initializeClimateLayer = (view: MapView) => async (dispatch: AppDis
     });
 
     // update renderer when selected variable changes
-    listenerMiddleware.startListening({
-        actionCreator: setSelectedVariable, effect: (action) => {
-            const { selectedVariable } = action.payload as ClimateSelection;
-            const multidimensionalDefinition = climateLayer.multidimensionalDefinition.map((def) => {
-                def.variableName = selectedVariable;
-                return def;
-            });
-            climateLayer.multidimensionalDefinition = multidimensionalDefinition;
-            const variableInfo = climateLayer.rasterInfo.multidimensionalInfo.variables.filter(
-                (variable) => variable.name === selectedVariable
-            )[0];
-            const renderer = climateLayer.renderer.clone() as RasterStretchRenderer;
-            renderer.statistics = variableInfo.statistics;
-            climateLayer.renderer = renderer;
-        }
-    });
+    const updateRenderer = (action: PayloadAction<ClimateSelection>) => {
+        const { selectedVariable } = action.payload as ClimateSelection;
+        const multidimensionalDefinition = climateLayer.multidimensionalDefinition.map((def) => {
+            def.variableName = selectedVariable;
+            return def;
+        });
+        climateLayer.multidimensionalDefinition = multidimensionalDefinition;
+        const variableInfo = climateLayer.rasterInfo.multidimensionalInfo.variables.filter(
+            (variable) => variable.name === selectedVariable
+        )[0];
+        const renderer = climateLayer.renderer.clone() as RasterStretchRenderer;
+        renderer.statistics = variableInfo.statistics;
+        climateLayer.renderer = renderer;
+    };
+
+    const variableListener = { actionCreator: setSelectedVariable, effect: updateRenderer };
+    unsubscribeListeners.push(listenerMiddleware.startListening(variableListener));
 
     // get value for scenario
     const scenarioDefinition = climateLayer.multidimensionalDefinition.find(def => def.dimensionName === layerConfig.dimensions.scenario.name);
     dispatch(setSelectedScenarioValue({ selectedScenarioValue: scenarioDefinition.values[0] }));
 
-    listenerMiddleware.startListening({
-        actionCreator: setSelectedScenarioValue, effect: (action) => {
-            const { selectedScenarioValue } = action.payload as ClimateSelection;
-            const multidimensionalDefinition = climateLayer.multidimensionalDefinition.map((def) => {
-                if (def.dimensionName === layerConfig.dimensions.scenario.name) {
-                    def.values = [selectedScenarioValue];
-                }
-                return def;
-            });
-            climateLayer.multidimensionalDefinition = multidimensionalDefinition;
-        }
-    });
+    const updateScenario = (action: PayloadAction<ClimateSelection>) => {
+        const { selectedScenarioValue } = action.payload as ClimateSelection;
+        const multidimensionalDefinition = climateLayer.multidimensionalDefinition.map((def) => {
+            if (def.dimensionName === layerConfig.dimensions.scenario.name) {
+                def.values = [selectedScenarioValue];
+            }
+            return def;
+        });
+        climateLayer.multidimensionalDefinition = multidimensionalDefinition;
+    };
+
+    const scenarioListener = { actionCreator: setSelectedScenarioValue, effect: updateScenario }
+    unsubscribeListeners.push(listenerMiddleware.startListening(scenarioListener));
 
     // get value for period
     const periodDefinition = climateLayer.multidimensionalDefinition.find(def => def.dimensionName === layerConfig.dimensions.period.name);
     dispatch(setSelectedPeriod({ selectedPeriod: periodDefinition.values[0] }));
 
-    listenerMiddleware.startListening({
-        actionCreator: setSelectedPeriod, effect: (action) => {
-            const { selectedPeriod } = action.payload as ClimateSelection;
-            const multidimensionalDefinition = climateLayer.multidimensionalDefinition.map((def) => {
-                if (def.dimensionName === layerConfig.dimensions.period.name) {
-                    def.values = [selectedPeriod];
-                }
-                return def;
-            });
-            climateLayer.multidimensionalDefinition = multidimensionalDefinition;
-        }
+    const changePeriod = (action: PayloadAction<ClimateSelection>) => {
+        const { selectedPeriod } = action.payload as ClimateSelection;
+        const multidimensionalDefinition = climateLayer.multidimensionalDefinition.map((def) => {
+            if (def.dimensionName === layerConfig.dimensions.period.name) {
+                def.values = [selectedPeriod];
+            }
+            return def;
+        });
+        climateLayer.multidimensionalDefinition = multidimensionalDefinition;
+    };
+
+    const periodListener = {
+        actionCreator: setSelectedPeriod, effect: changePeriod
+    };
+    unsubscribeListeners.push(listenerMiddleware.startListening(periodListener));
+
+}
+
+export const removeClimateLayerListeners = () => {
+    unsubscribeListeners.forEach(unsubscribe => {
+        unsubscribe({ cancelActive: true });
     });
 }
 
