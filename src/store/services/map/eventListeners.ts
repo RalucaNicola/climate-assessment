@@ -3,6 +3,7 @@ import { setMapCenterToHashParams } from "../../../utils/URLHashParams";
 import { AppDispatch } from "../../storeConfiguration";
 import { getClimateDetails } from "./climateLayer";
 import MapView from "@arcgis/core/views/MapView";
+import { setPopupVisibility } from "../popup/popupInfo";
 
 const listeners: IHandle[] = [];
 
@@ -23,6 +24,7 @@ export const initializeViewEventListeners = (view: MapView) => (dispatch: AppDis
             const mapPoint = view.toMap(event);
             const results = await getClimateDetails(mapPoint);
             console.log(results);
+            dispatch(setPopupVisibility({ visible: true }));
         });
 
         listeners.push(listenerClick);

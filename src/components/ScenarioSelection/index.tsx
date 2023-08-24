@@ -1,4 +1,4 @@
-import * as styles from "./ScenarioSelection.module.css";
+import * as styles from './ScenarioSelection.module.css';
 import { CalciteRadioButtonGroup, CalciteLabel, CalciteRadioButton } from '@esri/calcite-components-react';
 import '@esri/calcite-components/dist/components/calcite-radio-button-group';
 import '@esri/calcite-components/dist/components/calcite-radio-button';
@@ -14,29 +14,24 @@ const ScenarioSelection = () => {
   const selectedScenarioValue = useSelector((state: RootState) => state.climateSelection.selectedScenarioValue);
   const scenarioValues = layerConfig.dimensions.scenario.values;
   return (
-    <>
-      <CalciteRadioButtonGroup scale={'m'} name="scenario">
-        {scenarioValues.map((scenarioValue, index) =>
-          <div key={index} className={styles.scenarioSelectionItem}>
-            <CalciteLabel layout="inline" style={{ cursor: "pointer" }} scale="m">
-              <CalciteRadioButton
-                scale="m"
-                checked={selectedScenarioValue === scenarioValue.value ? true : null}
-                value={scenarioValue.value}
-                onCalciteRadioButtonChange={(event) => {
-                  dispatch(setSelectedScenarioValue({ selectedScenarioValue: event.target.value }));
-                }}
-              />
-              {scenarioValue.name}
-            </CalciteLabel>
-            <p>{scenarioValue.description}</p>
-          </div>
-
-        )
-        }
-      </CalciteRadioButtonGroup>
-
-    </>
+    <CalciteRadioButtonGroup scale={'m'} name='scenario'>
+      {scenarioValues.map((scenarioValue, index) => (
+        <div key={index} className={styles.scenarioSelectionItem}>
+          <CalciteLabel layout='inline' style={{ cursor: 'pointer' }} scale='m'>
+            <CalciteRadioButton
+              scale='m'
+              checked={selectedScenarioValue === scenarioValue.value ? true : null}
+              value={scenarioValue.value}
+              onCalciteRadioButtonChange={(event) => {
+                dispatch(setSelectedScenarioValue({ selectedScenarioValue: event.target.value }));
+              }}
+            />
+            {scenarioValue.name}
+          </CalciteLabel>
+          <p>{scenarioValue.description}</p>
+        </div>
+      ))}
+    </CalciteRadioButtonGroup>
   );
 };
 

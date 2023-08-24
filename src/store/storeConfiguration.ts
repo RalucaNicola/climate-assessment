@@ -3,12 +3,14 @@ import loadingReducer from './services/app-loading/loadingSlice';
 import errorReducer from './services/error-messaging/errorSlice';
 import modalOptionsReducer from './services/modal-options/modalSlice';
 import climateSelectionReducer from './services/climateSelectionSlice';
+import popupInfoReducer from './services/popup/popupInfo';
 
 const rootReducer = combineReducers({
   error: errorReducer,
   loading: loadingReducer,
   infoModal: modalOptionsReducer,
-  climateSelection: climateSelectionReducer
+  climateSelection: climateSelectionReducer,
+  popupInfo: popupInfoReducer
 });
 
 export const listenerMiddleware = createListenerMiddleware();

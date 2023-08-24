@@ -1,0 +1,42 @@
+.container {
+  composes: background from '../../utils/utils.module.css';
+  max-height: 50%;
+  max-width: min(50%, 500px);
+  position: absolute;
+  right: var(--margin);
+  top: var(--margin);
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header h1 {
+  color: var(--calcite-ui-brand);
+  text-transform: uppercase;
+  margin: 0;
+  text-align: center;
+  font-weight: normal;
+  font-size: 1.1rem;
+}
+
+.content {
+  flex: 1;
+  overflow: auto;
+}
+
+@media (max-width: 700px) {
+  .container {
+    right: 0;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    max-width: none;
+    max-height: none;
+  }
+}
