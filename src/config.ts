@@ -26,7 +26,7 @@ export const layerConfig = {
       description: "Time Period",
       values: [{
         value: 1445569200000,
-        name: "Modeled Epoch",
+        name: "Historical",
         years: "1976-2005"
       }, {
         value: 1445572800000,

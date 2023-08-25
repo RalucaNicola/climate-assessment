@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store/storeConfiguration';
 import { setPopupVisibility } from '../../store/services/popup/popupInfo';
 import ClimateChart from '../ClimateChart';
-import { layerConfig } from '../../config';
 import Section from '../Section';
 import { variables } from '../../store/services/map/climateLayer';
 
@@ -14,7 +13,7 @@ const Popup = () => {
   const dispatch = useAppDispatch();
   const isOpen = useSelector((state: RootState) => state.popupInfo.visible);
   const selectedVariable = useSelector((state: RootState) => state.climateSelection.selectedVariable);
-  const selectedVariableInfo = variables.find((variable) => variable.name === selectedVariable);
+  const selectedVariableInfo = variables ? variables.find((variable) => variable.name === selectedVariable) : null;
   return (
     <motion.div
       initial={false}
@@ -66,10 +65,16 @@ const Popup = () => {
           sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
           PageMaker including versions of Lorem Ipsum.
         </p>
-        {selectedVariableInfo ? <Section title={selectedVariableInfo.description} className=''></Section> : <></>}
-        <div className={styles.chartContainer}>
-          <ClimateChart></ClimateChart>
-        </div>
+        {selectedVariableInfo ? (
+          <>
+            <Section title={selectedVariableInfo.description} className=''></Section>
+            <div className={styles.chartContainer}>
+              <ClimateChart></ClimateChart>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </div>
     </motion.div>
   );

@@ -23,7 +23,7 @@ const renderPeriodTick = (tickProps: {
 
   if (index % 2 === 0) {
     return (
-      <text x={x + offset} y={y - 4} textAnchor='middle' fill='white'>
+      <text x={x + offset} y={y - 4} textAnchor='start' fill='rgb(219, 242, 255)' fontSize='0.8rem'>
         {value.split('-')[0]}
       </text>
     );
@@ -35,8 +35,6 @@ const ClimateChart = () => {
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <ComposedChart
-        width={700}
-        height={300}
         data={data}
         margin={{
           top: 20,
@@ -86,7 +84,6 @@ const ClimateChart = () => {
             if (data.scenario === 'Higher emissions') return data.values[0];
           }}
           stroke='#c93900'
-          legendType='rect'
           name='Higher emissions'
           label={{
             fill: '#c93900',
@@ -103,7 +100,7 @@ const ClimateChart = () => {
             if (data.scenario === 'Lower emissions') return data.values[0];
           }}
           stroke='#cf9700'
-          name='Average emissions'
+          name='Lower emissions'
           label={{
             fill: '#cf9700',
             fontSize: 14,
