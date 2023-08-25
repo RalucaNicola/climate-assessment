@@ -26,7 +26,14 @@ const BottomPanel = () => {
     return (
       <div className={styles.actionsContainer}>
         <div className={styles.leftActionsContainer}>
-          <button className={styles.applicationTitle} onClick={() => { window.location.href = window.location.pathname; }}>{applicationTitle}</button>
+          <button
+            className={styles.applicationTitle}
+            onClick={() => {
+              window.location.href = window.location.pathname;
+            }}
+          >
+            {applicationTitle}
+          </button>
         </div>
         <div className={styles.rightActionsContainer}>
           <CalciteAction
@@ -51,14 +58,34 @@ const BottomPanel = () => {
   return (
     <div className={styles.container}>
       {getHeader()}
-      <motion.div layout='size' animate={{
-        height: visible ? 'min(300px, 30vh)' : 0
-      }} style={{ overflow: 'auto' }}>
-        <div className={styles.climateContainer}>
-          <Section title="indicator" className={styles.indicatorContainer}>{climateLayerLoaded ? <IndicatorSelection /> : <></>}</Section>
-          <Section title="period" className={styles.periodContainer}>{climateLayerLoaded ? <PeriodSelection /> : <></>}</Section>
-          <Section title="scenario" className={styles.scenarioContainer}>{climateLayerLoaded ? <ScenarioSelection /> : <></>}</Section>
-        </div>
+      <motion.div
+        layout='size'
+        animate={{
+          height: visible ? 'min(300px, 30vh)' : 0
+        }}
+        style={{ overflow: 'auto' }}
+      >
+        {climateLayerLoaded ? (
+          <div className={styles.climateContainer}>
+            <div style={{ gridArea: 'indicator' }}>
+              <Section title='indicator'>
+                <IndicatorSelection />
+              </Section>
+            </div>
+            <div style={{ gridArea: 'period' }}>
+              <Section title='period'>
+                <PeriodSelection />
+              </Section>
+            </div>
+            <div style={{ gridArea: 'scenario' }}>
+              <Section title='scenario'>
+                <ScenarioSelection />
+              </Section>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
       </motion.div>
     </div>
   );

@@ -5,6 +5,7 @@ import { getClimateDetails } from "./climateLayer";
 import MapView from "@arcgis/core/views/MapView";
 import { setPopupVisibility } from "../popup/popupInfo";
 import { processChartData } from "../chart/chartData";
+import { getDemographicDetails } from "./demographicsLayer";
 
 const listeners: IHandle[] = [];
 
@@ -30,6 +31,11 @@ export const initializeViewEventListeners = (view: MapView) => (dispatch: AppDis
             } catch (error) {
                 console.log(error);
             }
+
+            try {
+                const results = await getDemographicDetails(mapPoint);
+                console.log(results);
+            } catch (error) { console.log(error) };
 
         });
 

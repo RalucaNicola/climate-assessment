@@ -1,4 +1,3 @@
-
 import { CalciteSelect, CalciteOption } from '@esri/calcite-components-react';
 import '@esri/calcite-components/dist/components/calcite-select';
 import '@esri/calcite-components/dist/components/calcite-option';
@@ -12,7 +11,7 @@ import ContinuousLegend from '../Legend/ContinuousLegend';
 const IndicatorSelection = () => {
   const dispatch = useAppDispatch();
   const selectedVariable = useSelector((state: RootState) => state.climateSelection.selectedVariable);
-  const selectedVariableInfo = variables.find(variable => variable.name === selectedVariable);
+  const selectedVariableInfo = variables.find((variable) => variable.name === selectedVariable);
   let legendInfo = null;
   if (selectedVariableInfo) {
     const { min, max, unit } = selectedVariableInfo;
@@ -20,33 +19,32 @@ const IndicatorSelection = () => {
       return {
         color,
         position: index / (colorRamp.length - 1)
-      }
-    })
+      };
+    });
     legendInfo = {
       min,
       max,
       unit,
       colorStops
-    }
+    };
   }
 
   return (
-    <><CalciteSelect scale='m'
-      label={'Select a variable'}
-      onCalciteSelectChange={(event) => {
-        const selectedVariable = event.target.selectedOption.value;
-        dispatch(setSelectedVariable({ selectedVariable }));
-      }}>
-      {variables.map((variable, index) =>
-        <CalciteOption
-          key={index}
-          selected={selectedVariable === variable.name ? true : null}
-          value={variable.name}
-        >
-          {variable.description}
-        </CalciteOption>)
-      }
-    </CalciteSelect>
+    <>
+      <CalciteSelect
+        scale='m'
+        label={'Select a variable'}
+        onCalciteSelectChange={(event) => {
+          const selectedVariable = event.target.selectedOption.value;
+          dispatch(setSelectedVariable({ selectedVariable }));
+        }}
+      >
+        {variables.map((variable, index) => (
+          <CalciteOption key={index} selected={selectedVariable === variable.name ? true : null} value={variable.name}>
+            {variable.description}
+          </CalciteOption>
+        ))}
+      </CalciteSelect>
       {legendInfo ? <ContinuousLegend legendInfo={legendInfo}></ContinuousLegend> : <></>}
     </>
   );

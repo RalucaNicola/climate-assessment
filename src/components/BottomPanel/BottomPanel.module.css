@@ -37,17 +37,6 @@
   margin: 0 auto;
   height: 100%;
 }
-
-.indicatorContainer {
-  grid-area: indicator;
-}
-.scenarioContainer {
-  grid-area: scenario;
-}
-.periodContainer {
-  grid-area: period;
-}
-
 .applicationTitle {
   margin: 0;
   text-transform: uppercase;

@@ -1,6 +1,10 @@
 export const mapConfig = {
   'web-map-id': 'f6de5f58ab844610b9379e0e249e50cd'
 };
+
+export const dmgLayerConfig = {
+  title: 'NEXGDDP_Polygon'
+}
 export const layerConfig = {
   title: 'hrrr_soil_20151023',
   variables: [

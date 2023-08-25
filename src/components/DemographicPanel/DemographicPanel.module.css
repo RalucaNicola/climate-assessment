@@ -1,0 +1,27 @@
+.demographicContainer {
+  display: flex;
+  gap: 10px;
+}
+
+.demographicTile {
+  display: inline;
+  text-align: center;
+  border: 1px solid;
+  padding: 20px 20px 0 20px;
+}
+
+.value {
+  margin: 0;
+  padding: 0;
+  font-size: 1.3rem;
+  font-weight: bold;
+}
+
+.demographicHeader {
+  margin: 0;
+  padding: 5px;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  margin-bottom: -15px;
+  composes: background from '../../utils/utils.module.css';
+}
