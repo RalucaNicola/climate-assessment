@@ -1,7 +1,7 @@
 .container {
   composes: background from '../../utils/utils.module.css';
-  max-height: 50%;
-  max-width: min(50%, 500px);
+  height: 50%;
+  width: min(50%, 500px);
   position: absolute;
   left: var(--margin);
   top: var(--margin);
@@ -26,8 +26,13 @@
 }
 
 .content {
-  flex: 1;
   overflow: auto;
+  flex: 1;
+}
+
+.chartContainer {
+  height: 300px;
+  width: 100%;
 }
 
 @media (max-width: 700px) {
@@ -36,7 +41,7 @@
     top: 0;
     left: 0;
     bottom: 0;
-    max-width: none;
-    max-height: none;
+    width: revert;
+    height: revert;
   }
 }

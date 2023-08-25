@@ -4,6 +4,7 @@ import { AppDispatch } from "../../storeConfiguration";
 import { getClimateDetails } from "./climateLayer";
 import MapView from "@arcgis/core/views/MapView";
 import { setPopupVisibility } from "../popup/popupInfo";
+import { processChartData } from "../chart/chartData";
 
 const listeners: IHandle[] = [];
 
@@ -22,9 +23,14 @@ export const initializeViewEventListeners = (view: MapView) => (dispatch: AppDis
         listeners.push(listener);
         const listenerClick = view.on('click', async (event) => {
             const mapPoint = view.toMap(event);
-            const results = await getClimateDetails(mapPoint);
-            console.log(results);
-            dispatch(setPopupVisibility({ visible: true }));
+            try {
+                const climateValues = await getClimateDetails(mapPoint);
+                dispatch(setPopupVisibility({ visible: true }));
+                dispatch(processChartData(climateValues));
+            } catch (error) {
+                console.log(error);
+            }
+
         });
 
         listeners.push(listenerClick);

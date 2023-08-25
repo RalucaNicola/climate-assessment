@@ -3,7 +3,7 @@ import { AppDispatch, listenerMiddleware, store } from "../../storeConfiguration
 import { setClimateLayerLoaded } from "../app-loading/loadingSlice";
 import ImageryTileLayer from "@arcgis/core/layers/ImageryTileLayer";
 import { layerConfig } from "../../../config";
-import { Variable } from "../../../types/types";
+import { RasterSliceValue, Variable } from "../../../types/types";
 import { ClimateSelection, setSelectedPeriod, setSelectedScenarioValue, setSelectedVariable } from "../climateSelectionSlice";
 import { RasterStretchRenderer } from "@arcgis/core/rasterRenderers";
 import MultipartColorRamp from "@arcgis/core/rest/support/MultipartColorRamp";
@@ -118,15 +118,15 @@ export const removeClimateLayerListeners = () => {
     });
 }
 
-export const getClimateDetails = (mapPoint: Point) => {
+export const getClimateDetails = (mapPoint: Point): Promise<Array<RasterSliceValue | null>> => {
     const state = store.getState();
     const currentVariable = state.climateSelection.selectedVariable;
     return new Promise((resolve, reject) => {
         climateLayer
             .identify(mapPoint, { transposedVariableName: currentVariable })
             .then(({ dataSeries }) => {
-                const climateValues = dataSeries || [Number.NaN];
-                resolve({ climateValues });
+                const climateValues: Array<RasterSliceValue | null> = dataSeries || [null];
+                resolve(climateValues);
             })
             .catch(reject);
     });

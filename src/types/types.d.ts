@@ -1,4 +1,5 @@
 import Color from "@arcgis/core/Color";
+import DimensionalDefinition from "@arcgis/core/layers/support/DimensionalDefinition";
 import { ReactNode } from "react";
 
 type ArrayWithColumnInfo<T> = T[] & { columns?: String[] };
@@ -26,4 +27,15 @@ export type LegendInfo = {
 export interface LegendProps {
   legendInfo: LegendInfo;
   children?: ReactNode;
+}
+
+export type RasterSliceValue = {
+  value: number[],
+  multidimensionalDefinition: DimensionalDefinition[]
+}
+
+export type ChartDataItem = {
+  period: string,
+  scenario: string,
+  values: number[]
 }

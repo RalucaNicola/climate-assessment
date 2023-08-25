@@ -5,10 +5,16 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/storeConfiguration';
 import { setPopupVisibility } from '../../store/services/popup/popupInfo';
+import ClimateChart from '../ClimateChart';
+import { layerConfig } from '../../config';
+import Section from '../Section';
+import { variables } from '../../store/services/map/climateLayer';
 
 const Popup = () => {
   const dispatch = useAppDispatch();
   const isOpen = useSelector((state: RootState) => state.popupInfo.visible);
+  const selectedVariable = useSelector((state: RootState) => state.climateSelection.selectedVariable);
+  const selectedVariableInfo = variables.find((variable) => variable.name === selectedVariable);
   return (
     <motion.div
       initial={false}
@@ -51,19 +57,19 @@ const Popup = () => {
         </div>
       </div>
       <div className={styles.content}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-        magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-        laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-        laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
-        dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
-        laborum.
+        <Section title='Demographic data' className=''></Section>
+        <p>
+          Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
+          standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to
+          make a type specimen book. It has survived not only five centuries, but also the leap into electronic
+          typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset
+          sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus
+          PageMaker including versions of Lorem Ipsum.
+        </p>
+        {selectedVariableInfo ? <Section title={selectedVariableInfo.description} className=''></Section> : <></>}
+        <div className={styles.chartContainer}>
+          <ClimateChart></ClimateChart>
+        </div>
       </div>
     </motion.div>
   );
