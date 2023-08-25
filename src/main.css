@@ -58,3 +58,10 @@ a:hover {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.8);
 }
+
+/* custom style for recharts */
+
+text.recharts-cartesian-axis-tick-value {
+  fill: var(--calcite-ui-brand-hover) !important;
+  font-size: 0.9rem;
+}

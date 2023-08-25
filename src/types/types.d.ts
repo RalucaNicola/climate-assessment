@@ -39,3 +39,15 @@ export type ChartDataItem = {
   scenario: string,
   values: number[]
 }
+
+export type DemographicData = {
+  Carbon: number;
+  MaxTemperatureC: number;
+  Population: number;
+}
+
+export type DemographicDataKeys = {
+  carbon: number;
+  temperature: number;
+  population: number;
+}

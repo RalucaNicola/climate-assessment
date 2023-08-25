@@ -15,6 +15,7 @@ const Popup = () => {
   const isOpen = useSelector((state: RootState) => state.popupInfo.visible);
   const selectedVariable = useSelector((state: RootState) => state.climateSelection.selectedVariable);
   const selectedVariableInfo = variables ? variables.find((variable) => variable.name === selectedVariable) : null;
+  const demographicData = useSelector((state: RootState) => state.popupInfo.demographicData);
   return (
     <motion.div
       initial={false}
@@ -57,9 +58,13 @@ const Popup = () => {
         </div>
       </div>
       <div className={styles.content}>
-        <Section title='Demographic data'>
-          <DemographicPanel></DemographicPanel>
-        </Section>
+        {demographicData ? (
+          <Section title='Demographic data'>
+            <DemographicPanel demographicData={demographicData}></DemographicPanel>
+          </Section>
+        ) : (
+          <></>
+        )}
 
         {selectedVariableInfo ? (
           <>

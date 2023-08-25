@@ -23,7 +23,14 @@ const renderPeriodTick = (tickProps: {
 
   if (index % 2 === 0) {
     return (
-      <text x={x + offset} y={y - 4} textAnchor='start' fill='rgb(219, 242, 255)' fontSize='0.8rem'>
+      <text
+        x={0}
+        y={0}
+        textAnchor='start'
+        fill='rgb(219, 242, 255)'
+        fontSize='0.9rem'
+        transform={`translate(${x + offset}, ${y})rotate(-15)`}
+      >
         {value.split('-')[0]}
       </text>
     );
