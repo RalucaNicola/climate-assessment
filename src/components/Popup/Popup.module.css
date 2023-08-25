@@ -3,7 +3,7 @@
   max-height: 50%;
   max-width: min(50%, 500px);
   position: absolute;
-  right: var(--margin);
+  left: var(--margin);
   top: var(--margin);
   display: flex;
   flex-direction: column;

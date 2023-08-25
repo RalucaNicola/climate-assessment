@@ -17,21 +17,21 @@ const Popup = () => {
       animate={isOpen ? 'visible' : 'hidden'}
       variants={{
         visible: {
-          clipPath: 'inset(0% 0% 0% 0% round 0)',
+          clipPath: 'inset(0% 0% 0% 0%)',
           transition: {
             type: 'spring',
             bounce: 0,
-            duration: 0.7,
+            duration: 0.4,
             delayChildren: 0.3,
             staggerChildren: 0.05
           }
         },
         hidden: {
-          clipPath: 'inset(10% 50% 90% 50% round 0)',
+          clipPath: 'inset(0% 100% 100% 0%)',
           transition: {
             type: 'spring',
             bounce: 0,
-            duration: 0.3
+            duration: 0.2
           }
         }
       }}

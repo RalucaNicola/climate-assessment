@@ -8,6 +8,8 @@ import { getMapCenterFromHashParams } from '../../../utils/URLHashParams';
 import { setError } from '../error-messaging/errorSlice';
 import { initializeViewEventListeners } from './eventListeners';
 import { initializeClimateLayer } from './climateLayer';
+import Search from '@arcgis/core/widgets/Search';
+import Zoom from '@arcgis/core/widgets/Zoom';
 
 let view: MapView = null;
 
@@ -37,10 +39,6 @@ export const initializeMapView = (divRef: HTMLDivElement) => async (dispatch: Ap
         const mapView = new MapView({
             container: divRef,
             map: webmap,
-            padding: {
-                top: 50,
-                bottom: 0
-            },
             ui: {
                 components: []
             },
@@ -62,6 +60,10 @@ export const initializeMapView = (divRef: HTMLDivElement) => async (dispatch: Ap
         await mapView.when(() => {
             view = mapView;
             dispatch(setViewLoaded(true));
+            const search = new Search({ view });
+            view.ui.add(search, "top-right");
+            const zoom = new Zoom({ view });
+            view.ui.add(zoom, "top-right");
             const mapCenter = getMapCenterFromHashParams();
             if (mapCenter) {
                 mapView.goTo({ zoom: mapCenter.zoom, center: [mapCenter.center.lon, mapCenter.center.lat] });
