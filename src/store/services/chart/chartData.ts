@@ -12,34 +12,36 @@ const sortChartDataByPeriod = (data: ChartDataItem[]) => {
 }
 
 export const processChartData = (dataSlices: RasterSliceValue[]) => async (dispatch: AppDispatch) => {
-    let chartData: ChartDataItem[] = [];
-    dataSlices.forEach(slice => {
-        let scenario = null;
-        let period = null;
-        let value = roundNumber(slice.value[0], 2);
-        const [scenarioInfo, periodInfo] = slice.multidimensionalDefinition;
-        layerConfig.dimensions.period.values.forEach(periodValue => {
-            if (periodValue.value === periodInfo.values[0]) {
-                period = periodValue.name;
+    let chartData: ChartDataItem[] = null;
+    if (dataSlices) {
+        chartData = [];
+        dataSlices.forEach(slice => {
+            let scenario = null;
+            let period = null;
+            let value = roundNumber(slice.value[0], 2);
+            const [scenarioInfo, periodInfo] = slice.multidimensionalDefinition;
+            layerConfig.dimensions.period.values.forEach(periodValue => {
+                if (periodValue.value === periodInfo.values[0]) {
+                    period = periodValue.name;
+                }
+            });
+            if (!period) {
+                return;
+            }
+            layerConfig.dimensions.scenario.values.forEach(scenarioValue => {
+                if (scenarioValue.value === scenarioInfo.values[0]) {
+                    scenario = scenarioValue.name;
+                }
+            });
+            if (scenario && period) {
+                chartData = [...chartData, {
+                    scenario,
+                    period,
+                    values: [value]
+                }]
             }
         });
-        if (!period) {
-            return;
-        }
-        layerConfig.dimensions.scenario.values.forEach(scenarioValue => {
-            if (scenarioValue.value === scenarioInfo.values[0]) {
-                scenario = scenarioValue.name;
-            }
-        });
-        if (scenario && period) {
-            chartData.push({
-                scenario,
-                period,
-                values: [value]
-            })
-        }
-    });
-
-    sortChartDataByPeriod(chartData);
+        sortChartDataByPeriod(chartData);
+    }
     dispatch(setChartData(chartData));
 }

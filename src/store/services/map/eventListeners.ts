@@ -7,6 +7,7 @@ import { setDemographicData, setMapPoint } from "../popup/popupInfo";
 import { processChartData } from "../chart/chartData";
 import { getDemographicDetails } from "./demographicsLayer";
 import { DemographicData } from "../../../types/types";
+import { setError } from "../error-messaging/errorSlice";
 
 const listeners: IHandle[] = [];
 
@@ -31,7 +32,8 @@ export const initializeViewEventListeners = (view: MapView) => (dispatch: AppDis
                 const climateValues = await getClimateDetails(mapPoint);
                 dispatch(processChartData(climateValues));
             } catch (error) {
-                console.log(error);
+                const { message } = error;
+                dispatch(setError({ name: 'Error fetching climate data', message: message }));
             }
 
             try {
@@ -39,8 +41,13 @@ export const initializeViewEventListeners = (view: MapView) => (dispatch: AppDis
                 if (results) {
                     const { MaxTemperatureC: temperature, Population: population, Carbon: carbon } = results;
                     dispatch(setDemographicData({ demographicData: { temperature, population, carbon } }))
+                } else {
+                    dispatch(setDemographicData({ demographicData: null }))
                 }
-            } catch (error) { console.log(error) };
+            } catch (error) {
+                const { message } = error;
+                dispatch(setError({ name: 'Error fetching demographic data', message: message }));
+            };
 
         });
 

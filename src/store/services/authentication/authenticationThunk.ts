@@ -4,6 +4,7 @@ import OAuthInfo from '@arcgis/core/identity/OAuthInfo';
 import Portal from '@arcgis/core/portal/Portal';
 import { portalUrl } from '../../../config';
 import { setAuthenticationInfo } from './authenticationSlice';
+import { setError } from '../error-messaging/errorSlice';
 
 export const setupIdentityManager = () => async (dispatch: AppDispatch) => {
   const portal = new Portal({ url: portalUrl });
@@ -28,7 +29,8 @@ export const setupIdentityManager = () => async (dispatch: AppDispatch) => {
       })
     );
   } catch (error) {
-    console.log(error);
+    const { message } = error;
+    dispatch(setError({ name: 'Error while authenticating', message: message }));
   }
 };
 

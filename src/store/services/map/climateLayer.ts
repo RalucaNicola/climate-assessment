@@ -125,7 +125,7 @@ export const getClimateDetails = (mapPoint: Point): Promise<Array<RasterSliceVal
         climateLayer
             .identify(mapPoint, { transposedVariableName: currentVariable })
             .then(({ dataSeries }) => {
-                const climateValues: Array<RasterSliceValue | null> = dataSeries || [null];
+                const climateValues: Array<RasterSliceValue | null> = dataSeries || null;
                 resolve(climateValues);
             })
             .catch(reject);

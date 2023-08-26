@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { ChartDataItem } from '../../../types/types';
 
-export interface ChartData {
+interface ChartData {
     data: ChartDataItem[]
 }
 
 const initialState = {
-    data: []
+    data: null
 } as ChartData
 
 const chartSlice = createSlice({

@@ -11,7 +11,11 @@ import {
   XAxis,
   YAxis
 } from 'recharts';
-import { RootState } from '../../store/storeConfiguration';
+import { ChartDataItem } from '../../types/types';
+
+type ChartProps = {
+  data: ChartDataItem[];
+};
 
 const renderPeriodTick = (tickProps: {
   x: number;
@@ -37,8 +41,7 @@ const renderPeriodTick = (tickProps: {
   }
 };
 
-const ClimateChart = () => {
-  const data = useSelector((state: RootState) => state.chartData.data);
+const ClimateChart = ({ data }: ChartProps) => {
   return (
     <ResponsiveContainer width='100%' height='100%'>
       <ComposedChart
