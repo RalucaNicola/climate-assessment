@@ -23,7 +23,7 @@ let unsubscribeListeners: UnsubscribeListener[];
 export const initializeGraphicsLayer = () => {
     unsubscribeListeners = [];
     const view = getGlobalView();
-    graphicsLayer = new GraphicsLayer();
+    graphicsLayer = new GraphicsLayer({ effect: "drop-shadow(1px, 1px, 2px)" });
     view.map.layers.add(graphicsLayer);
 
     const updateMapPointGraphic = (action: PayloadAction<PopupInfo>) => {

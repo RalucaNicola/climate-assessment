@@ -3,11 +3,12 @@ import { setMapCenterToHashParams } from "../../../utils/URLHashParams";
 import { AppDispatch } from "../../storeConfiguration";
 import { getClimateDetails } from "./climateLayer";
 import MapView from "@arcgis/core/views/MapView";
-import { setDemographicData, setMapPoint } from "../popup/popupInfo";
+import { setDemographicData, setLoadingDemographicData, setMapPoint } from "../popup/popupInfo";
 import { processChartData } from "../chart/chartData";
 import { getDemographicDetails } from "./demographicsLayer";
 import { DemographicData } from "../../../types/types";
 import { setError } from "../error-messaging/errorSlice";
+import { setLoadingChartData } from "../chart/chartSlice";
 
 const listeners: IHandle[] = [];
 
@@ -28,6 +29,8 @@ export const initializeViewEventListeners = (view: MapView) => (dispatch: AppDis
             const mapPoint = view.toMap(event);
             const { longitude, latitude, x, y, spatialReference } = mapPoint
             dispatch(setMapPoint({ mapPoint: { longitude, latitude, x, y, spatialReference: { wkid: spatialReference.wkid } } }));
+            dispatch(setLoadingDemographicData(true));
+            dispatch(setLoadingChartData(true));
             try {
                 const climateValues = await getClimateDetails(mapPoint);
                 dispatch(processChartData(climateValues));
@@ -35,7 +38,7 @@ export const initializeViewEventListeners = (view: MapView) => (dispatch: AppDis
                 const { message } = error;
                 dispatch(setError({ name: 'Error fetching climate data', message: message }));
             }
-
+            dispatch(setLoadingChartData(false));
             try {
                 const results = await getDemographicDetails(mapPoint) as DemographicData;
                 if (results) {
@@ -44,11 +47,12 @@ export const initializeViewEventListeners = (view: MapView) => (dispatch: AppDis
                 } else {
                     dispatch(setDemographicData({ demographicData: null }))
                 }
+
             } catch (error) {
                 const { message } = error;
                 dispatch(setError({ name: 'Error fetching demographic data', message: message }));
             };
-
+            dispatch(setLoadingDemographicData(false));
         });
 
         listeners.push(listenerClick);

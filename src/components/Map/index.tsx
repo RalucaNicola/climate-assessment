@@ -4,6 +4,7 @@ import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { destroyView, initializeMapView } from '../../store/services/map/view';
 import { removeEventListeners } from '../../store/services/map/eventListeners';
 import { removeClimateLayerListeners } from '../../store/services/map/climateLayer';
+import { removeGraphicsLayer } from '../../store/services/map/graphicsLayer';
 
 interface Props {
   children?: ReactNode;
@@ -19,8 +20,9 @@ const Map: FC<Props> = () => {
       return () => {
         removeEventListeners();
         removeClimateLayerListeners();
+        removeGraphicsLayer();
         destroyView();
-      }
+      };
     }
   }, [mapDivRef.current]);
 

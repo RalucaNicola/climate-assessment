@@ -1,4 +1,4 @@
-import { CalciteAction } from '@esri/calcite-components-react';
+import { CalciteAction, CalciteLoader } from '@esri/calcite-components-react';
 import * as styles from './Popup.module.css';
 import { motion } from 'framer-motion';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
@@ -27,7 +27,9 @@ const Popup = () => {
   const selectedVariable = useSelector((state: RootState) => state.climateSelection.selectedVariable);
   const selectedVariableInfo = variables ? variables.find((variable) => variable.name === selectedVariable) : null;
   const demographicData = useSelector((state: RootState) => state.popupInfo.demographicData);
+  const loadingDemographicData = useSelector((state: RootState) => state.popupInfo.loadingDemographicData);
   const chartData = useSelector((state: RootState) => state.chartData.data);
+  const loadingChartData = useSelector((state: RootState) => state.chartData.loading);
   return (
     <motion.div
       initial={false}
@@ -71,24 +73,27 @@ const Popup = () => {
       </div>
       <div className={styles.content}>
         <Section title='Demographic data'>
-          {demographicData ? (
-            <DemographicPanel demographicData={demographicData}></DemographicPanel>
-          ) : (
-            <div>No demographic data for this location</div>
+          {loadingDemographicData && demographicData === null && (
+            <CalciteLoader label='Loading demographic data' scale='s'></CalciteLoader>
           )}
+          {!loadingDemographicData && demographicData === null && (
+            <div>No demographic data found for this location.</div>
+          )}
+          {demographicData && <DemographicPanel demographicData={demographicData}></DemographicPanel>}
         </Section>
 
         {selectedVariableInfo ? (
-          <>
-            <Section title={selectedVariableInfo.description}></Section>
-            {chartData ? (
+          <Section title={selectedVariableInfo.description}>
+            {loadingChartData && chartData === null && (
+              <CalciteLoader label='Loading demographic data' scale='s'></CalciteLoader>
+            )}
+            {!loadingChartData && chartData === null && <div>No climate data found for this location.</div>}
+            {chartData && (
               <div className={styles.chartContainer}>
                 <ClimateChart data={chartData}></ClimateChart>
               </div>
-            ) : (
-              <div>No climate data to display for this location</div>
             )}
-          </>
+          </Section>
         ) : (
           <></>
         )}
