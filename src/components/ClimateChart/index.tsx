@@ -74,7 +74,7 @@ const ClimateChart = ({ data }: ChartProps) => {
           xAxisId='period'
         />
         <YAxis />
-        <Tooltip />
+        <Tooltip contentStyle={{ backgroundColor: 'rgba(0 35 47 / 100%)' }} />
         {/* <Bar
           dataKey={(data) => {
             return [data.values[0], data.values[2]];
@@ -101,6 +101,7 @@ const ClimateChart = ({ data }: ChartProps) => {
             position: 'top',
             fontWeight: 'bold'
           }}
+          animationDuration={500}
         />
         <Legend />
         <Line
@@ -117,6 +118,7 @@ const ClimateChart = ({ data }: ChartProps) => {
             position: 'top',
             fontWeight: 'bold'
           }}
+          animationDuration={500}
         />
       </ComposedChart>
     </ResponsiveContainer>
