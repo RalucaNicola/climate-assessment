@@ -3,18 +3,15 @@ import { getGlobalView } from "./view";
 import { PayloadAction, UnsubscribeListener } from "@reduxjs/toolkit";
 import { PopupInfo, setMapPoint } from "../popup/popupInfo";
 import Graphic from "@arcgis/core/Graphic";
-import { SimpleMarkerSymbol } from "@arcgis/core/symbols";
+import { PictureMarkerSymbol } from "@arcgis/core/symbols";
 import { listenerMiddleware } from "../../storeConfiguration";
 import { Point } from "@arcgis/core/geometry";
 
-const symbol = new SimpleMarkerSymbol({
+const symbol = new PictureMarkerSymbol({
     color: [255, 255, 255, 0.25],
-    size: 12,
-    style: "circle",
-    outline: {
-        width: 1,
-        color: [255, 255, 255, 1]
-    }
+    width: "32px",
+    height: "32px",
+    url: "./assets/target.png"
 });
 
 let graphicsLayer: GraphicsLayer | null = null;
@@ -23,7 +20,7 @@ let unsubscribeListeners: UnsubscribeListener[];
 export const initializeGraphicsLayer = () => {
     unsubscribeListeners = [];
     const view = getGlobalView();
-    graphicsLayer = new GraphicsLayer({ effect: "drop-shadow(1px, 1px, 2px)" });
+    graphicsLayer = new GraphicsLayer();
     view.map.layers.add(graphicsLayer);
 
     const updateMapPointGraphic = (action: PayloadAction<PopupInfo>) => {
