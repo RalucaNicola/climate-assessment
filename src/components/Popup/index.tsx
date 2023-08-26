@@ -4,15 +4,26 @@ import { motion } from 'framer-motion';
 import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/storeConfiguration';
-import { setPopupVisibility } from '../../store/services/popup/popupInfo';
+import { setMapPoint } from '../../store/services/popup/popupInfo';
 import ClimateChart from '../ClimateChart';
 import Section from '../Section';
 import { variables } from '../../store/services/map/climateLayer';
 import DemographicPanel from '../DemographicPanel';
+import { roundNumber } from '../../utils/utilities';
+import { Point } from '@arcgis/core/geometry';
+
+const getHeaderForMapPoint = (mapPoint: Point): string => {
+  const hemisphereStringLng =
+    mapPoint.longitude < 0 ? `${roundNumber(-mapPoint.longitude, 2)}°E` : `${roundNumber(mapPoint.longitude, 2)}°W`;
+  const hemisphereStringLat =
+    mapPoint.latitude < 0 ? `${roundNumber(-mapPoint.latitude, 2)}°S` : `${roundNumber(mapPoint.latitude, 2)}°N`;
+  return `Estimations for ${hemisphereStringLng}, ${hemisphereStringLat}`;
+};
 
 const Popup = () => {
   const dispatch = useAppDispatch();
-  const isOpen = useSelector((state: RootState) => state.popupInfo.visible);
+  const mapPoint = useSelector((state: RootState) => state.popupInfo.mapPoint);
+  const isOpen = mapPoint ? true : false;
   const selectedVariable = useSelector((state: RootState) => state.climateSelection.selectedVariable);
   const selectedVariableInfo = variables ? variables.find((variable) => variable.name === selectedVariable) : null;
   const demographicData = useSelector((state: RootState) => state.popupInfo.demographicData);
@@ -44,13 +55,13 @@ const Popup = () => {
       }}
     >
       <div className={styles.header}>
-        <h1>Popup</h1>
+        {mapPoint ? <h1>{getHeaderForMapPoint(mapPoint)}</h1> : <></>}
         <div className={styles.close}>
           <CalciteAction
             appearance='transparent'
             icon='x'
             onClick={() => {
-              dispatch(setPopupVisibility({ visible: false }));
+              dispatch(setMapPoint({ mapPoint: null }));
             }}
             scale='m'
             text={'Close modal window'}

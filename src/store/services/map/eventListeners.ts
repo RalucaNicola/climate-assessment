@@ -3,7 +3,7 @@ import { setMapCenterToHashParams } from "../../../utils/URLHashParams";
 import { AppDispatch } from "../../storeConfiguration";
 import { getClimateDetails } from "./climateLayer";
 import MapView from "@arcgis/core/views/MapView";
-import { setDemographicData, setPopupVisibility } from "../popup/popupInfo";
+import { setDemographicData, setMapPoint } from "../popup/popupInfo";
 import { processChartData } from "../chart/chartData";
 import { getDemographicDetails } from "./demographicsLayer";
 import { DemographicData } from "../../../types/types";
@@ -25,9 +25,10 @@ export const initializeViewEventListeners = (view: MapView) => (dispatch: AppDis
         listeners.push(listener);
         const listenerClick = view.on('click', async (event) => {
             const mapPoint = view.toMap(event);
+            const { longitude, latitude, x, y, spatialReference } = mapPoint
+            dispatch(setMapPoint({ mapPoint: { longitude, latitude, x, y, spatialReference: { wkid: spatialReference.wkid } } }));
             try {
                 const climateValues = await getClimateDetails(mapPoint);
-                dispatch(setPopupVisibility({ visible: true }));
                 dispatch(processChartData(climateValues));
             } catch (error) {
                 console.log(error);

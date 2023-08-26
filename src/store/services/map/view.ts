@@ -11,6 +11,7 @@ import { initializeClimateLayer } from './climateLayer';
 import Search from '@arcgis/core/widgets/Search';
 import Zoom from '@arcgis/core/widgets/Zoom';
 import { initializeDemographicsLayer } from './demographicsLayer';
+import { initializeGraphicsLayer } from './graphicsLayer';
 
 let view: MapView = null;
 
@@ -71,6 +72,7 @@ export const initializeMapView = (divRef: HTMLDivElement) => async (dispatch: Ap
             }
             dispatch(initializeClimateLayer(mapView));
             initializeDemographicsLayer(mapView);
+            initializeGraphicsLayer();
             dispatch(initializeViewEventListeners(mapView));
             //@ts-ignore
             window.view = mapView;
